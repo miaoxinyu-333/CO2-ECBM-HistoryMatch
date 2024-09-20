@@ -123,10 +123,17 @@ In each training script, the path to the configuration file is specified like th
 config_path = os.path.join("config", "FourierUNet.yaml")
 ```
 
-## Data Set
+## DataSet and Logs
 
-## Logs File 
+Due to the large size of the dataset and log files, they are not included in this repository. You can download both the dataset and logs from the following Google Drive link:
 
+[Download Data Set and Logs from Google Drive](https://drive.google.com/drive/folders/1V4fso84Mc_fLaKv9xpU6hfLItr41IYSN?usp=sharing)
+
+### Instructions:
+- After downloading the dataset, place it in the `dataSet/` directory.
+- After downloading the logs, place them in the `logs/` directory.
+
+This will ensure that all files are properly located when running the project.
 
 ## Usage
 
@@ -255,6 +262,6 @@ This work was fully supported by the Anhui Province Science and Technology Major
 For any inquiries or further information, please feel free to contact:
 
 - **Student Contact**: Xinyu Miao ([1185190409@qq.com](mailto:1185190409@qq.com))
-- **Mentor Contact**: [Chunhua Chen] ([mentor_email@example.com](mailto:mentor_email@example.com))
+- **Mentor Contact**: [Chunhua Chen] ([chunhua.chen@inest.cas.cn](mailto:chunhua.chen@inest.cas.cn))
 
 If you have any questions regarding the project or need additional information, please reach out to the student. For more detailed technical or supervisory queries, you can contact the project mentor directly.
