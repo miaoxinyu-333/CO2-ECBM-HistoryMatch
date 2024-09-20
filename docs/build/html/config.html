@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>config package &mdash; CO2-ECBM-HISTORYMATCH v1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=76e2d817"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CO2-ECBM-HISTORYMATCH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">config package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-config.FourierModelConfig">config.FourierModelConfig module</a><ul>
+<li><a class="reference internal" href="#config.FourierModelConfig.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul>
+<li><a class="reference internal" href="#config.FourierModelConfig.Config.to_dict"><code class="docutils literal notranslate"><span class="pre">Config.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#config.FourierModelConfig.ModelParams"><code class="docutils literal notranslate"><span class="pre">ModelParams</span></code></a></li>
+<li><a class="reference internal" href="#config.FourierModelConfig.OptimizerParams"><code class="docutils literal notranslate"><span class="pre">OptimizerParams</span></code></a></li>
+<li><a class="reference internal" href="#config.FourierModelConfig.SchedulerParams"><code class="docutils literal notranslate"><span class="pre">SchedulerParams</span></code></a></li>
+<li><a class="reference internal" href="#config.FourierModelConfig.TaskParams"><code class="docutils literal notranslate"><span class="pre">TaskParams</span></code></a></li>
+<li><a class="reference internal" href="#config.FourierModelConfig.TrainingParams"><code class="docutils literal notranslate"><span class="pre">TrainingParams</span></code></a></li>
+<li><a class="reference internal" href="#config.FourierModelConfig.load_config"><code class="docutils literal notranslate"><span class="pre">load_config()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-config.PCAModelConfig">config.PCAModelConfig module</a><ul>
+<li><a class="reference internal" href="#config.PCAModelConfig.PCAModelConfig"><code class="docutils literal notranslate"><span class="pre">PCAModelConfig</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-config">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CO2-ECBM-HISTORYMATCH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">config package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/config.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="config-package">
+<h1>config package<a class="headerlink" href="#config-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-config.FourierModelConfig">
+<span id="config-fouriermodelconfig-module"></span><h2>config.FourierModelConfig module<a class="headerlink" href="#module-config.FourierModelConfig" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="config.FourierModelConfig.Config">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">config.FourierModelConfig.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config/FourierModelConfig.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#config.FourierModelConfig.Config" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="config.FourierModelConfig.Config.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/config/FourierModelConfig.html#Config.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#config.FourierModelConfig.Config.to_dict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="config.FourierModelConfig.ModelParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">config.FourierModelConfig.</span></span><span class="sig-name descname"><span class="pre">ModelParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config/FourierModelConfig.html#ModelParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#config.FourierModelConfig.ModelParams" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="config.FourierModelConfig.OptimizerParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">config.FourierModelConfig.</span></span><span class="sig-name descname"><span class="pre">OptimizerParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">optimizer_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config/FourierModelConfig.html#OptimizerParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#config.FourierModelConfig.OptimizerParams" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="config.FourierModelConfig.SchedulerParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">config.FourierModelConfig.</span></span><span class="sig-name descname"><span class="pre">SchedulerParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scheduler_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config/FourierModelConfig.html#SchedulerParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#config.FourierModelConfig.SchedulerParams" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="config.FourierModelConfig.TaskParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">config.FourierModelConfig.</span></span><span class="sig-name descname"><span class="pre">TaskParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config/FourierModelConfig.html#TaskParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#config.FourierModelConfig.TaskParams" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="config.FourierModelConfig.TrainingParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">config.FourierModelConfig.</span></span><span class="sig-name descname"><span class="pre">TrainingParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">training_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config/FourierModelConfig.html#TrainingParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#config.FourierModelConfig.TrainingParams" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="config.FourierModelConfig.load_config">
+<span class="sig-prename descclassname"><span class="pre">config.FourierModelConfig.</span></span><span class="sig-name descname"><span class="pre">load_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config/FourierModelConfig.html#load_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#config.FourierModelConfig.load_config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-config.PCAModelConfig">
+<span id="config-pcamodelconfig-module"></span><h2>config.PCAModelConfig module<a class="headerlink" href="#module-config.PCAModelConfig" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="config.PCAModelConfig.PCAModelConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">config.PCAModelConfig.</span></span><span class="sig-name descname"><span class="pre">PCAModelConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/config/PCAModelConfig.html#PCAModelConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#config.PCAModelConfig.PCAModelConfig" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+</section>
+<section id="module-config">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-config" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Xinyu Miao.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

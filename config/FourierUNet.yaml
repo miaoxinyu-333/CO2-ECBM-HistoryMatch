@@ -1,0 +1,123 @@
+tasks:
+  task1:
+    task_params:
+      task_id : 1
+      task_name : "surrogateModel"
+      data_set_path : "dataSet/raw"
+      input_field1 : "data_per"
+      input_field2 : "data_por"
+      target_field : "data_con_co2"
+      logger_path : "logs/tb_logs"
+      logger_name : "surrogateModel"
+      save_model_path : "logs/surrogateModel/best_model.pth"
+    model_params:
+      name: 'FourierUnet'
+      n_input_scalar_components: 2
+      n_input_vector_components: 0
+      n_output_scalar_components: 1
+      n_output_vector_components: 0
+      time_history: 1
+      time_future: 12
+      hidden_channels: 16
+      activation: 'gelu'
+      modes1: 16
+      modes2: 16
+      norm: True
+      ch_mults: [1, 2, 2, 2]
+      is_attn: [False, True, True, False]
+      mid_attn : True
+      n_blocks: 2
+      n_fourier_layers: 2
+      mode_scaling: True
+      use1x1: False
+    optimizer_params:
+      lr: 0.0005  # Changed to float
+      weight_decay: 0.00001  # Changed from 1e-5 to 0.00001
+    scheduler_params:
+      warmup_epochs: 5
+      max_epochs: 50
+      eta_min: 0.0000001  # Changed from 1e-7 to 0.0000001
+    training_params:
+      batch_size: 64
+      max_epochs: 100
+    loss_function: "ScaledLpLoss"
+
+  task2:
+    task_params:
+      task_id : 2
+      task_name : "reconstruction_per"
+      data_set_path : "dataSet/reconstruction/reconstructions_dataset_per.h5"
+      logger_path : "logs/tb_logs"
+      logger_name : "reconstruction_per"
+      save_model_path : "logs/recModel/per/best_model.pth"
+    model_params:
+      name: 'FourierUnet'
+      n_input_scalar_components: 1
+      n_input_vector_components: 0
+      n_output_scalar_components: 1
+      n_output_vector_components: 0
+      time_history: 1
+      time_future: 1
+      hidden_channels: 32
+      activation: 'gelu'
+      modes1: 16
+      modes2: 16
+      norm: True
+      ch_mults: [1, 2, 2, 2]
+      is_attn: [False, True, True, False]
+      mid_attn : True
+      n_blocks: 2
+      n_fourier_layers: 2
+      mode_scaling: True
+      use1x1: False
+    optimizer_params:
+      lr: 0.0005  # Already a float
+      weight_decay: 0.00001  # Changed from 1e-5 to 0.00001
+    scheduler_params:
+      warmup_epochs: 5
+      max_epochs: 50
+      eta_min: 0.0000001  # Changed from 1e-7 to 0.0000001
+    training_params:
+      batch_size: 64
+      max_epochs: 50
+    loss_function: "ScaledLpLoss"
+  
+  task3:
+    task_params:
+      task_id : 3
+      task_name : "reconstruction_por"
+      data_set_path : "dataSet/reconstruction/reconstructions_dataset_por.h5"
+      logger_path : "logs/tb_logs"
+      logger_name : "reconstruction_por"
+      save_model_path : "logs/recModel/por/best_model.pth"
+    model_params:
+      name: 'FourierUnet'
+      n_input_scalar_components: 1
+      n_input_vector_components: 0
+      n_output_scalar_components: 1
+      n_output_vector_components: 0
+      time_history: 1
+      time_future: 1
+      hidden_channels: 32
+      activation: 'gelu'
+      modes1: 16
+      modes2: 16
+      norm: True
+      ch_mults: [1, 2, 2, 2]
+      is_attn: [False, True, True, False]
+      mid_attn : True
+      n_blocks: 2
+      n_fourier_layers: 2
+      mode_scaling: True
+      use1x1: False
+    optimizer_params:
+      lr: 0.0005  # Already a float
+      weight_decay: 0.00001  # Changed from 1e-5 to 0.00001
+    scheduler_params:
+      warmup_epochs: 5
+      max_epochs: 50
+      eta_min: 0.0000001  # Changed from 1e-7 to 0.0000001
+    training_params:
+      batch_size: 64
+      max_epochs: 50
+    loss_function: "ScaledLpLoss"

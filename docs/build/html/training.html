@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>training package &mdash; CO2-ECBM-HISTORYMATCH v1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=76e2d817"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CO2-ECBM-HISTORYMATCH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">training package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-training.train_PCA">training.train_PCA module</a><ul>
+<li><a class="reference internal" href="#training.train_PCA.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#training.train_PCA.setup_project_root"><code class="docutils literal notranslate"><span class="pre">setup_project_root()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-training.train_autoencoder_per">training.train_autoencoder_per module</a><ul>
+<li><a class="reference internal" href="#training.train_autoencoder_per.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#training.train_autoencoder_per.setup_project_root"><code class="docutils literal notranslate"><span class="pre">setup_project_root()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-training.train_autoencoder_por">training.train_autoencoder_por module</a><ul>
+<li><a class="reference internal" href="#training.train_autoencoder_por.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#training.train_autoencoder_por.setup_project_root"><code class="docutils literal notranslate"><span class="pre">setup_project_root()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-training.train_surrogateModel">training.train_surrogateModel module</a><ul>
+<li><a class="reference internal" href="#training.train_surrogateModel.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#training.train_surrogateModel.setup_project_root"><code class="docutils literal notranslate"><span class="pre">setup_project_root()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-training">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CO2-ECBM-HISTORYMATCH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">training package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/training.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="training-package">
+<h1>training package<a class="headerlink" href="#training-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-training.train_PCA">
+<span id="training-train-pca-module"></span><h2>training.train_PCA module<a class="headerlink" href="#module-training.train_PCA" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="training.train_PCA.main">
+<span class="sig-prename descclassname"><span class="pre">training.train_PCA.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/training/train_PCA.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#training.train_PCA.main" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="training.train_PCA.setup_project_root">
+<span class="sig-prename descclassname"><span class="pre">training.train_PCA.</span></span><span class="sig-name descname"><span class="pre">setup_project_root</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/training/train_PCA.html#setup_project_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#training.train_PCA.setup_project_root" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-training.train_autoencoder_per">
+<span id="training-train-autoencoder-per-module"></span><h2>training.train_autoencoder_per module<a class="headerlink" href="#module-training.train_autoencoder_per" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="training.train_autoencoder_per.main">
+<span class="sig-prename descclassname"><span class="pre">training.train_autoencoder_per.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/training/train_autoencoder_per.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#training.train_autoencoder_per.main" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="training.train_autoencoder_per.setup_project_root">
+<span class="sig-prename descclassname"><span class="pre">training.train_autoencoder_per.</span></span><span class="sig-name descname"><span class="pre">setup_project_root</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/training/train_autoencoder_per.html#setup_project_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#training.train_autoencoder_per.setup_project_root" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-training.train_autoencoder_por">
+<span id="training-train-autoencoder-por-module"></span><h2>training.train_autoencoder_por module<a class="headerlink" href="#module-training.train_autoencoder_por" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="training.train_autoencoder_por.main">
+<span class="sig-prename descclassname"><span class="pre">training.train_autoencoder_por.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/training/train_autoencoder_por.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#training.train_autoencoder_por.main" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="training.train_autoencoder_por.setup_project_root">
+<span class="sig-prename descclassname"><span class="pre">training.train_autoencoder_por.</span></span><span class="sig-name descname"><span class="pre">setup_project_root</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/training/train_autoencoder_por.html#setup_project_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#training.train_autoencoder_por.setup_project_root" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-training.train_surrogateModel">
+<span id="training-train-surrogatemodel-module"></span><h2>training.train_surrogateModel module<a class="headerlink" href="#module-training.train_surrogateModel" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="training.train_surrogateModel.main">
+<span class="sig-prename descclassname"><span class="pre">training.train_surrogateModel.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/training/train_surrogateModel.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#training.train_surrogateModel.main" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="training.train_surrogateModel.setup_project_root">
+<span class="sig-prename descclassname"><span class="pre">training.train_surrogateModel.</span></span><span class="sig-name descname"><span class="pre">setup_project_root</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/training/train_surrogateModel.html#setup_project_root"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#training.train_surrogateModel.setup_project_root" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-training">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-training" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Xinyu Miao.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>utils package &mdash; CO2-ECBM-HISTORYMATCH v1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=76e2d817"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CO2-ECBM-HISTORYMATCH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">utils package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-utils.assimilationUtils">utils.assimilationUtils module</a><ul>
+<li><a class="reference internal" href="#utils.assimilationUtils.compute_parameter_posterior"><code class="docutils literal notranslate"><span class="pre">compute_parameter_posterior()</span></code></a></li>
+<li><a class="reference internal" href="#utils.assimilationUtils.initialize_parameters"><code class="docutils literal notranslate"><span class="pre">initialize_parameters()</span></code></a></li>
+<li><a class="reference internal" href="#utils.assimilationUtils.perform_data_assimilation"><code class="docutils literal notranslate"><span class="pre">perform_data_assimilation()</span></code></a></li>
+<li><a class="reference internal" href="#utils.assimilationUtils.update_parameters"><code class="docutils literal notranslate"><span class="pre">update_parameters()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-utils.dataUtils">utils.dataUtils module</a><ul>
+<li><a class="reference internal" href="#utils.dataUtils.create_synthetic_obs"><code class="docutils literal notranslate"><span class="pre">create_synthetic_obs()</span></code></a></li>
+<li><a class="reference internal" href="#utils.dataUtils.get_obsdata"><code class="docutils literal notranslate"><span class="pre">get_obsdata()</span></code></a></li>
+<li><a class="reference internal" href="#utils.dataUtils.load_datasets_from_h5"><code class="docutils literal notranslate"><span class="pre">load_datasets_from_h5()</span></code></a></li>
+<li><a class="reference internal" href="#utils.dataUtils.load_reconstuction_h5"><code class="docutils literal notranslate"><span class="pre">load_reconstuction_h5()</span></code></a></li>
+<li><a class="reference internal" href="#utils.dataUtils.normalize_tensor"><code class="docutils literal notranslate"><span class="pre">normalize_tensor()</span></code></a></li>
+<li><a class="reference internal" href="#utils.dataUtils.observation_operator"><code class="docutils literal notranslate"><span class="pre">observation_operator()</span></code></a></li>
+<li><a class="reference internal" href="#utils.dataUtils.remove_prefix"><code class="docutils literal notranslate"><span class="pre">remove_prefix()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-utils.fileUtils">utils.fileUtils module</a><ul>
+<li><a class="reference internal" href="#utils.fileUtils.save_images_to_hdf5"><code class="docutils literal notranslate"><span class="pre">save_images_to_hdf5()</span></code></a></li>
+<li><a class="reference internal" href="#utils.fileUtils.save_pca_model"><code class="docutils literal notranslate"><span class="pre">save_pca_model()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-utils.metricsUtils">utils.metricsUtils module</a><ul>
+<li><a class="reference internal" href="#utils.metricsUtils.calculate_reconstruction_error"><code class="docutils literal notranslate"><span class="pre">calculate_reconstruction_error()</span></code></a></li>
+<li><a class="reference internal" href="#utils.metricsUtils.compute_error_metrics"><code class="docutils literal notranslate"><span class="pre">compute_error_metrics()</span></code></a></li>
+<li><a class="reference internal" href="#utils.metricsUtils.ssim_index"><code class="docutils literal notranslate"><span class="pre">ssim_index()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-utils.plotUtils">utils.plotUtils module</a><ul>
+<li><a class="reference internal" href="#utils.plotUtils.analyze_pca_results"><code class="docutils literal notranslate"><span class="pre">analyze_pca_results()</span></code></a></li>
+<li><a class="reference internal" href="#utils.plotUtils.compare_images"><code class="docutils literal notranslate"><span class="pre">compare_images()</span></code></a></li>
+<li><a class="reference internal" href="#utils.plotUtils.plot_assimilation_process"><code class="docutils literal notranslate"><span class="pre">plot_assimilation_process()</span></code></a></li>
+<li><a class="reference internal" href="#utils.plotUtils.plot_errors_over_iterations"><code class="docutils literal notranslate"><span class="pre">plot_errors_over_iterations()</span></code></a></li>
+<li><a class="reference internal" href="#utils.plotUtils.plot_parameter_variance"><code class="docutils literal notranslate"><span class="pre">plot_parameter_variance()</span></code></a></li>
+<li><a class="reference internal" href="#utils.plotUtils.save_image"><code class="docutils literal notranslate"><span class="pre">save_image()</span></code></a></li>
+<li><a class="reference internal" href="#utils.plotUtils.visualize_differences_autoencoder"><code class="docutils literal notranslate"><span class="pre">visualize_differences_autoencoder()</span></code></a></li>
+<li><a class="reference internal" href="#utils.plotUtils.visualize_differences_surrogate"><code class="docutils literal notranslate"><span class="pre">visualize_differences_surrogate()</span></code></a></li>
+<li><a class="reference internal" href="#utils.plotUtils.visualize_results"><code class="docutils literal notranslate"><span class="pre">visualize_results()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CO2-ECBM-HISTORYMATCH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">utils package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="utils-package">
+<h1>utils package<a class="headerlink" href="#utils-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-utils.assimilationUtils">
+<span id="utils-assimilationutils-module"></span><h2>utils.assimilationUtils module<a class="headerlink" href="#module-utils.assimilationUtils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.assimilationUtils.compute_parameter_posterior">
+<span class="sig-prename descclassname"><span class="pre">utils.assimilationUtils.</span></span><span class="sig-name descname"><span class="pre">compute_parameter_posterior</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_up</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_pp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/assimilationUtils.html#compute_parameter_posterior"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.assimilationUtils.compute_parameter_posterior" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.assimilationUtils.initialize_parameters">
+<span class="sig-prename descclassname"><span class="pre">utils.assimilationUtils.</span></span><span class="sig-name descname"><span class="pre">initialize_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eki</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/assimilationUtils.html#initialize_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.assimilationUtils.initialize_parameters" title="Link to this definition"></a></dt>
+<dd><p>Initialize parameter ensemble with random values.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.assimilationUtils.perform_data_assimilation">
+<span class="sig-prename descclassname"><span class="pre">utils.assimilationUtils.</span></span><span class="sig-name descname"><span class="pre">perform_data_assimilation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eki</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation_operator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter_ensemble</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/assimilationUtils.html#perform_data_assimilation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.assimilationUtils.perform_data_assimilation" title="Link to this definition"></a></dt>
+<dd><p>Run the Ensemble Kalman Inversion and track intermediate outputs, errors, and variance.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.assimilationUtils.update_parameters">
+<span class="sig-prename descclassname"><span class="pre">utils.assimilationUtils.</span></span><span class="sig-name descname"><span class="pre">update_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eki</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter_ensemble</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs_prior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observations</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/assimilationUtils.html#update_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.assimilationUtils.update_parameters" title="Link to this definition"></a></dt>
+<dd><p>Update parameters during data assimilation.</p>
+</dd></dl>
+
+</section>
+<section id="module-utils.dataUtils">
+<span id="utils-datautils-module"></span><h2>utils.dataUtils module<a class="headerlink" href="#module-utils.dataUtils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.dataUtils.create_synthetic_obs">
+<span class="sig-prename descclassname"><span class="pre">utils.dataUtils.</span></span><span class="sig-name descname"><span class="pre">create_synthetic_obs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prior_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/dataUtils.html#create_synthetic_obs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.dataUtils.create_synthetic_obs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.dataUtils.get_obsdata">
+<span class="sig-prename descclassname"><span class="pre">utils.dataUtils.</span></span><span class="sig-name descname"><span class="pre">get_obsdata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/dataUtils.html#get_obsdata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.dataUtils.get_obsdata" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.dataUtils.load_datasets_from_h5">
+<span class="sig-prename descclassname"><span class="pre">utils.dataUtils.</span></span><span class="sig-name descname"><span class="pre">load_datasets_from_h5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/dataUtils.html#load_datasets_from_h5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.dataUtils.load_datasets_from_h5" title="Link to this definition"></a></dt>
+<dd><p>从指定目录的 HDF5 文件加载数据集，并以文件名作为变量名存储在字典中。</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.dataUtils.load_reconstuction_h5">
+<span class="sig-prename descclassname"><span class="pre">utils.dataUtils.</span></span><span class="sig-name descname"><span class="pre">load_reconstuction_h5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h5_file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/dataUtils.html#load_reconstuction_h5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.dataUtils.load_reconstuction_h5" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.dataUtils.normalize_tensor">
+<span class="sig-prename descclassname"><span class="pre">utils.dataUtils.</span></span><span class="sig-name descname"><span class="pre">normalize_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="_modules/utils/dataUtils.html#normalize_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.dataUtils.normalize_tensor" title="Link to this definition"></a></dt>
+<dd><p>归一化张量到 [0, 1] 区间。</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tensor</strong> (<em>torch.Tensor</em>) – 要归一化的张量。</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>归一化后的张量。</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.dataUtils.observation_operator">
+<span class="sig-prename descclassname"><span class="pre">utils.dataUtils.</span></span><span class="sig-name descname"><span class="pre">observation_operator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_output</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/dataUtils.html#observation_operator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.dataUtils.observation_operator" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.dataUtils.remove_prefix">
+<span class="sig-prename descclassname"><span class="pre">utils.dataUtils.</span></span><span class="sig-name descname"><span class="pre">remove_prefix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/dataUtils.html#remove_prefix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.dataUtils.remove_prefix" title="Link to this definition"></a></dt>
+<dd><p>Old style model is stored with all names prefixed with <cite>prefix</cite>.</p>
+</dd></dl>
+
+</section>
+<section id="module-utils.fileUtils">
+<span id="utils-fileutils-module"></span><h2>utils.fileUtils module<a class="headerlink" href="#module-utils.fileUtils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.fileUtils.save_images_to_hdf5">
+<span class="sig-prename descclassname"><span class="pre">utils.fileUtils.</span></span><span class="sig-name descname"><span class="pre">save_images_to_hdf5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reconstructed_images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/fileUtils.html#save_images_to_hdf5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.fileUtils.save_images_to_hdf5" title="Link to this definition"></a></dt>
+<dd><p>将原始图像和重构图像保存到HDF5文件中。</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>images</strong> (<em>torch.Tensor</em>) – 原始图像数据。</p></li>
+<li><p><strong>reconstructed_images</strong> (<em>torch.Tensor</em>) – 重构后的图像数据。</p></li>
+<li><p><strong>file_path</strong> (<em>str</em>) – HDF5文件保存路径。</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.fileUtils.save_pca_model">
+<span class="sig-prename descclassname"><span class="pre">utils.fileUtils.</span></span><span class="sig-name descname"><span class="pre">save_pca_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pca_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/fileUtils.html#save_pca_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.fileUtils.save_pca_model" title="Link to this definition"></a></dt>
+<dd><p>保存PCA模型。</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pca_model</strong> (<a class="reference internal" href="models.html#models.PCAModel.PCAModel" title="models.PCAModel.PCAModel"><em>PCAModel</em></a>) – 训练好的PCA模型。</p></li>
+<li><p><strong>model_path</strong> (<em>str</em>) – 模型保存路径。</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-utils.metricsUtils">
+<span id="utils-metricsutils-module"></span><h2>utils.metricsUtils module<a class="headerlink" href="#module-utils.metricsUtils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.metricsUtils.calculate_reconstruction_error">
+<span class="sig-prename descclassname"><span class="pre">utils.metricsUtils.</span></span><span class="sig-name descname"><span class="pre">calculate_reconstruction_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">original_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reconstructed_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/utils/metricsUtils.html#calculate_reconstruction_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.metricsUtils.calculate_reconstruction_error" title="Link to this definition"></a></dt>
+<dd><p>计算重构误差，包括R², SSIM和NRMSE。</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>original_data</strong> (<em>torch.Tensor</em>) – 原始输入数据，形状为 (样本数, 通道数, 高度, 宽度)。</p></li>
+<li><p><strong>reconstructed_data</strong> (<em>torch.Tensor</em>) – 重构后的数据，形状为 (样本数, 通道数, 高度, 宽度)。</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>每个通道的重构误差，包括R², SSIM和NRMSE。</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.metricsUtils.compute_error_metrics">
+<span class="sig-prename descclassname"><span class="pre">utils.metricsUtils.</span></span><span class="sig-name descname"><span class="pre">compute_error_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">given_obs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generated_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/metricsUtils.html#compute_error_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.metricsUtils.compute_error_metrics" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.metricsUtils.ssim_index">
+<span class="sig-prename descclassname"><span class="pre">utils.metricsUtils.</span></span><span class="sig-name descname"><span class="pre">ssim_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/metricsUtils.html#ssim_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.metricsUtils.ssim_index" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-utils.plotUtils">
+<span id="utils-plotutils-module"></span><h2>utils.plotUtils module<a class="headerlink" href="#module-utils.plotUtils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.plotUtils.analyze_pca_results">
+<span class="sig-prename descclassname"><span class="pre">utils.plotUtils.</span></span><span class="sig-name descname"><span class="pre">analyze_pca_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">low_dim_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">explained_variance_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/plotUtils.html#analyze_pca_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.plotUtils.analyze_pca_results" title="Link to this definition"></a></dt>
+<dd><p>分析PCA结果并绘制累计解释方差图。</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.plotUtils.compare_images">
+<span class="sig-prename descclassname"><span class="pre">utils.plotUtils.</span></span><span class="sig-name descname"><span class="pre">compare_images</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs_tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reconstructed_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/plotUtils.html#compare_images"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.plotUtils.compare_images" title="Link to this definition"></a></dt>
+<dd><p>从样本中抽取几对样本，并对比原始图像和重构图像的各个通道。</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.plotUtils.plot_assimilation_process">
+<span class="sig-prename descclassname"><span class="pre">utils.plotUtils.</span></span><span class="sig-name descname"><span class="pre">plot_assimilation_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">given_observation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/plotUtils.html#plot_assimilation_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.plotUtils.plot_assimilation_process" title="Link to this definition"></a></dt>
+<dd><p>Plot the assimilation process across iterations.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.plotUtils.plot_errors_over_iterations">
+<span class="sig-prename descclassname"><span class="pre">utils.plotUtils.</span></span><span class="sig-name descname"><span class="pre">plot_errors_over_iterations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mse_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mae_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_iterations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/plotUtils.html#plot_errors_over_iterations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.plotUtils.plot_errors_over_iterations" title="Link to this definition"></a></dt>
+<dd><p>Plot MSE and MAE over iterations.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.plotUtils.plot_parameter_variance">
+<span class="sig-prename descclassname"><span class="pre">utils.plotUtils.</span></span><span class="sig-name descname"><span class="pre">plot_parameter_variance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_variance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_variance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/plotUtils.html#plot_parameter_variance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.plotUtils.plot_parameter_variance" title="Link to this definition"></a></dt>
+<dd><p>Plot initial vs final parameter variance.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.plotUtils.save_image">
+<span class="sig-prename descclassname"><span class="pre">utils.plotUtils.</span></span><span class="sig-name descname"><span class="pre">save_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/plotUtils.html#save_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.plotUtils.save_image" title="Link to this definition"></a></dt>
+<dd><p>Helper function to save an image.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.plotUtils.visualize_differences_autoencoder">
+<span class="sig-prename descclassname"><span class="pre">utils.plotUtils.</span></span><span class="sig-name descname"><span class="pre">visualize_differences_autoencoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">42</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output_images'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/plotUtils.html#visualize_differences_autoencoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.plotUtils.visualize_differences_autoencoder" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.plotUtils.visualize_differences_surrogate">
+<span class="sig-prename descclassname"><span class="pre">utils.plotUtils.</span></span><span class="sig-name descname"><span class="pre">visualize_differences_surrogate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">42</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output_images'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/plotUtils.html#visualize_differences_surrogate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.plotUtils.visualize_differences_surrogate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.plotUtils.visualize_results">
+<span class="sig-prename descclassname"><span class="pre">utils.plotUtils.</span></span><span class="sig-name descname"><span class="pre">visualize_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">given_obs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generated_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/plotUtils.html#visualize_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.plotUtils.visualize_results" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-utils" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Xinyu Miao.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>modules.ForwardModelCreator &mdash; CO2-ECBM-HISTORYMATCH v1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=76e2d817"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CO2-ECBM-HISTORYMATCH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CO2-ECBM-HISTORYMATCH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">modules.ForwardModelCreator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for modules.ForwardModelCreator</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">from</span> <span class="nn">models.AHMModel</span> <span class="kn">import</span> <span class="n">AHMModel</span>
+<span class="kn">from</span> <span class="nn">utils.dataUtils</span> <span class="kn">import</span> <span class="n">remove_prefix</span>
+<span class="kn">from</span> <span class="nn">models.ForwardModel</span> <span class="kn">import</span> <span class="n">ForwardModel</span>
+<span class="kn">from</span> <span class="nn">config.PCAModelConfig</span> <span class="kn">import</span> <span class="n">PCAModelConfig</span>
+<span class="kn">from</span> <span class="nn">config.FourierModelConfig</span> <span class="kn">import</span> <span class="n">load_config</span>
+<span class="kn">from</span> <span class="nn">omegaconf</span> <span class="kn">import</span> <span class="n">OmegaConf</span>
+
+<div class="viewcode-block" id="ForwardModelCreator">
+<a class="viewcode-back" href="../../modules.html#modules.ForwardModelCreator.ForwardModelCreator">[docs]</a>
+<span class="k">class</span> <span class="nc">ForwardModelCreator</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Set device</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span>
+
+        <span class="c1"># Config paths</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_path_fourier</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;FourierUNet.yaml&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_path_pca</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;pca.yaml&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Models for &#39;per&#39; and &#39;por&#39; PCA, Autoencoder, and Surrogate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pca_model_per</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pca_model_por</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder_per</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder_por</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogate_model</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="ForwardModelCreator.load_pca_models">
+<a class="viewcode-back" href="../../modules.html#modules.ForwardModelCreator.ForwardModelCreator.load_pca_models">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_pca_models</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load PCA models for permeability and porosity.&quot;&quot;&quot;</span>
+        <span class="n">config_pca</span> <span class="o">=</span> <span class="n">PCAModelConfig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config_path_pca</span><span class="p">)</span>
+        <span class="n">pca_model_path_per</span> <span class="o">=</span> <span class="n">config_pca</span><span class="o">.</span><span class="n">save_model_path_per</span>
+        <span class="n">pca_model_path_por</span> <span class="o">=</span> <span class="n">config_pca</span><span class="o">.</span><span class="n">save_model_path_por</span>
+
+        <span class="c1"># Load PCA models</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pca_model_path_per</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_per</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pca_model_per</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f_per</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pca_model_path_por</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_por</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pca_model_por</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f_por</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ForwardModelCreator.load_autoencoder_models">
+<a class="viewcode-back" href="../../modules.html#modules.ForwardModelCreator.ForwardModelCreator.load_autoencoder_models">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_autoencoder_models</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load autoencoder models for permeability and porosity.&quot;&quot;&quot;</span>
+        <span class="n">task_per</span> <span class="o">=</span> <span class="s2">&quot;task2&quot;</span>
+        <span class="n">task_por</span> <span class="o">=</span> <span class="s2">&quot;task3&quot;</span>
+        <span class="n">cfg_per</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config_path_fourier</span><span class="p">,</span><span class="n">task_per</span><span class="p">)</span>
+        <span class="n">cfg_por</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config_path_fourier</span><span class="p">,</span><span class="n">task_por</span><span class="p">)</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;model.&quot;</span>
+
+        <span class="c1"># Load the model structure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder_per</span> <span class="o">=</span> <span class="n">AHMModel</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">cfg_per</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder_por</span> <span class="o">=</span> <span class="n">AHMModel</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">cfg_por</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+
+        <span class="c1"># Load the model weights</span>
+        <span class="n">autoencoder_checkpoint_path_per</span> <span class="o">=</span> <span class="n">cfg_per</span><span class="o">.</span><span class="n">task_params</span><span class="o">.</span><span class="n">save_model_path</span>
+        <span class="n">autoencoder_checkpoint_path_por</span> <span class="o">=</span> <span class="n">cfg_por</span><span class="o">.</span><span class="n">task_params</span><span class="o">.</span><span class="n">save_model_path</span>
+
+        <span class="c1"># Load model weights from .pth files</span>
+        <span class="n">autoencoder_checkpoint_per</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">autoencoder_checkpoint_path_per</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">autoencoder_checkpoint_por</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">autoencoder_checkpoint_path_por</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="n">autoencoder_state_dict_per</span> <span class="o">=</span> <span class="n">remove_prefix</span><span class="p">(</span><span class="n">autoencoder_checkpoint_per</span><span class="p">,</span> <span class="n">prefix</span><span class="p">)</span>
+        <span class="n">autoencoder_state_dict_por</span> <span class="o">=</span> <span class="n">remove_prefix</span><span class="p">(</span><span class="n">autoencoder_checkpoint_por</span><span class="p">,</span> <span class="n">prefix</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder_per</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">autoencoder_state_dict_per</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoencoder_por</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">autoencoder_state_dict_por</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ForwardModelCreator.load_surrogate_model">
+<a class="viewcode-back" href="../../modules.html#modules.ForwardModelCreator.ForwardModelCreator.load_surrogate_model">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_surrogate_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load the surrogate (UNet) model.&quot;&quot;&quot;</span>
+        <span class="n">task_surrogate</span> <span class="o">=</span> <span class="s2">&quot;task1&quot;</span>
+        <span class="n">cfg_surogate</span> <span class="o">=</span> <span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config_path_fourier</span><span class="p">,</span> <span class="n">task_surrogate</span><span class="p">)</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;model.&quot;</span>
+
+        <span class="c1"># Load surrogate model structure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogate_model</span> <span class="o">=</span> <span class="n">AHMModel</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">cfg_surogate</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+
+        <span class="c1"># Load the surrogate model weights</span>
+        <span class="n">unet_checkpoint_path</span> <span class="o">=</span> <span class="n">cfg_surogate</span><span class="o">.</span><span class="n">task_params</span><span class="o">.</span><span class="n">save_model_path</span>
+        <span class="n">unet_checkpoint</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">unet_checkpoint_path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">unet_state_dict</span> <span class="o">=</span> <span class="n">remove_prefix</span><span class="p">(</span><span class="n">unet_checkpoint</span><span class="p">,</span> <span class="n">prefix</span><span class="p">)</span>
+
+        <span class="c1"># Load the state dictionary into the model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogate_model</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">unet_state_dict</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ForwardModelCreator.create_forward_model">
+<a class="viewcode-back" href="../../modules.html#modules.ForwardModelCreator.ForwardModelCreator.create_forward_model">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_forward_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate and return the forward model.&quot;&quot;&quot;</span>
+        <span class="c1"># Load all necessary models</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_pca_models</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_autoencoder_models</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_surrogate_model</span><span class="p">()</span>
+
+        <span class="c1"># Instantiate the forward model class with the loaded models</span>
+        <span class="n">forward_model</span> <span class="o">=</span> <span class="n">ForwardModel</span><span class="p">(</span>
+            <span class="n">pca_model_per</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pca_model_per</span><span class="p">,</span>
+            <span class="n">pca_model_por</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pca_model_por</span><span class="p">,</span>
+            <span class="n">autoencoder_per</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">autoencoder_per</span><span class="p">,</span>
+            <span class="n">autoencoder_por</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">autoencoder_por</span><span class="p">,</span>
+            <span class="n">surrogate_model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">surrogate_model</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Set the model to evaluation mode and move it to the appropriate device</span>
+        <span class="n">forward_model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="n">forward_model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">forward_model</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Xinyu Miao.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

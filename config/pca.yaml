@@ -1,0 +1,18 @@
+task_params:
+  task_id : 1
+  task_name : "PCA_Model"
+  data_set_path : "dataSet/raw"
+  input_field1 : "data_per"
+  input_field2 : "data_por"
+  target_field : "data_con_co2"
+  logger_path : "logs/pcaModel/pca_model.pkl"
+  logger_name : "pca_model"
+  save_model_path_per : "logs/pcaModel/pca_model_per.pkl"
+  save_model_path_por : "logs/pcaModel/pca_model_por.pkl"
+  path_to_save_images_per : "dataSet/reconstruction/reconstructions_dataset_per.h5"
+  path_to_save_images_por : "dataSet/reconstruction/reconstructions_dataset_por.h5"
+  path_to_save_figures_per : "logs/images/pca_per"
+  path_to_save_figures_por : "logs/images/pca_por"
+  path_to_save_figures_differences : "logs/images/pca"
+model_params:
+  latent_dim : 300
