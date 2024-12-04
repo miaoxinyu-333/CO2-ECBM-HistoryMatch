@@ -172,7 +172,7 @@ def visualize_differences_surrogate(model, dataset, time_steps=12, device='cpu',
 def set_plotting_params():
     """设置全局绘图参数."""
     plt.rcParams.update({
-        'font.size': 14,  # 字体大小
+        'font.size': 20,  # 字体大小
         'axes.labelsize': 16,  # 坐标轴标签字体大小
         'axes.titlesize': 18,  # 标题字体大小
         'legend.fontsize': 14,  # 图例字体大小
@@ -301,3 +301,49 @@ def plot_porosity_hist(porosity, seed, save_dir='plots'):
     os.makedirs(save_dir, exist_ok=True)
     plt.savefig(os.path.join(save_dir, f'porosity_hist_seed_{seed}.png'))
     plt.close()  # 关闭图像以节省内存
+
+
+def plot_concentration(output_prior_initial, output_prior_final, minimum_prediction, maximum_prediction, observations):
+    """
+    Plot concentration across 12 months for pre-assimilation and post-assimilation data, and add lines for
+    minimum prediction, maximum prediction, and observations. Save plots as .eps files.
+    :param output_prior_initial: numpy array of shape (100, 12), pre-assimilation concentration data.
+    :param output_prior_final: numpy array of shape (100, 12), post-assimilation concentration data.
+    :param minimum_prediction: numpy array of shape (12,), lower bounds for predictions.
+    :param maximum_prediction: numpy array of shape (12,), upper bounds for predictions.
+    :param observations: numpy array of shape (12,), observed data.
+    """
+    # Set months range
+    months = np.arange(1, 13)
+
+    # Plot pre-assimilation concentration
+    plt.figure(figsize=(12, 6))
+    for sample in output_prior_initial:
+        plt.plot(months, sample, alpha=0.3, color='blue', linewidth=0.7)  # Semi-transparent lines
+    plt.plot(months, minimum_prediction, color='red', label='Lower Bound', linewidth=2)
+    plt.plot(months, maximum_prediction, color='orange', label='Upper Bound', linewidth=2)
+    plt.plot(months, observations, color='black', label='Observations', linewidth=2)
+    plt.xlabel("Month", fontsize=18)  # X-axis label font size
+    plt.ylabel("Concentration (mol/m³)", fontsize=18)  # Y-axis label font size
+    plt.xticks(months, fontsize=14)  # X-axis ticks font size
+    plt.yticks(fontsize=14)  # Y-axis ticks font size
+    plt.grid(True, linestyle='--', alpha=0.5)
+    plt.legend(fontsize=14)  # Legend font size
+    plt.savefig("pre_assimilation_concentration.eps", format="eps", dpi=300)  # Save as .eps
+    plt.show()
+
+    # Plot post-assimilation concentration
+    plt.figure(figsize=(12, 6))
+    for sample in output_prior_final:
+        plt.plot(months, sample, alpha=0.3, color='blue', linewidth=0.7)  # Semi-transparent lines
+    plt.plot(months, minimum_prediction, color='red', label='Lower Bound', linewidth=2)
+    plt.plot(months, maximum_prediction, color='orange', label='Upper Bound', linewidth=2)
+    plt.plot(months, observations, color='black', label='Observations', linewidth=0.5)
+    plt.xlabel("Month", fontsize=18)  # X-axis label font size
+    plt.ylabel("Concentration (mol/m³)", fontsize=18)  # Y-axis label font size
+    plt.xticks(months, fontsize=14)  # X-axis ticks font size
+    plt.yticks(fontsize=14)  # Y-axis ticks font size
+    plt.grid(True, linestyle='--', alpha=0.5)
+    plt.legend(fontsize=14)  # Legend font size
+    plt.savefig("post_assimilation_concentration.eps", format="eps", dpi=300)  # Save as .eps
+    plt.show()

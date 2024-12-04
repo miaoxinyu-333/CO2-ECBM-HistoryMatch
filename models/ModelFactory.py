@@ -1,16 +1,12 @@
 from modules.Unetbase import Unetbase
-from modules.Unet import Unet
-from modules.Unet2015 import Unet2015
-from modules.Resnet import ResNet
 from modules.FourierUnet import FourierUnet
+from modules.SimpleCNN import SimpleCNN
 
 class ModelFactory:
     models = {
         'FourierUnet': FourierUnet,
-        'ResNet' : ResNet,
-        'Unet' : Unet,
         'Unetbase' : Unetbase,
-        'Unet2015' : Unet2015
+        'SimpleCNN' : SimpleCNN
     }
 
     @staticmethod

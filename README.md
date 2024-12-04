@@ -30,7 +30,7 @@ CO2-ECBM-HistoryMatch
 │   ├── surrogateModel        # Stores results for the surrogate model
 │   ├── tb_logs               # TensorBoard log files
 ├── models                    # Model definition module
-│   ├── AHMModel.py           # History matching model definition
+│   ├── SurrogateModel.py           # History matching model definition
 │   ├── ForwardModel.py       # Forward model definition
 │   ├── PCAModel.py           # PCA model definition
 │   ├── __init__.py           # Initialization file for the models module

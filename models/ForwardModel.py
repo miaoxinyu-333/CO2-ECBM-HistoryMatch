@@ -2,14 +2,11 @@ import pytorch_lightning as pl
 import torch
 
 class ForwardModel(pl.LightningModule):
-    def __init__(self, pca_model_per, pca_model_por, autoencoder_per, autoencoder_por, surrogate_model, device='cuda'):
+    def __init__(self, autoencoder_model, surrogate_model, device='cuda'):
         super(ForwardModel, self).__init__()
-        
+
         # Assign the models to instance variables
-        self.pca_model_per = pca_model_per
-        self.pca_model_por = pca_model_por
-        self.autoencoder_per = autoencoder_per
-        self.autoencoder_por = autoencoder_por
+        self.autoencoder_model = autoencoder_model
         self.surrogate_model = surrogate_model
         
         # Assign the device to an instance variable
@@ -23,23 +20,15 @@ class ForwardModel(pl.LightningModule):
 
     def forward(self, x):
         # 将输入移动到指定设备
-        x = x.to(self.model_device) # shape (batchsize,300)
+        x = x.to(self.model_device)  # shape (batch_size, 2, ...)
 
-        latent_per = x[:, 0, :]
-        latent_por = x[:, 1, :]
-        
-        # 经过PCA逆变换
-        x_pca_inverse_per = self.pca_model_per.inverse_transform(latent_per.cpu().numpy(), 1, 32, 32).to(self.model_device)  # shape :(batchsize,1,32,32)
-        x_pca_inverse_por = self.pca_model_por.inverse_transform(latent_por.cpu().numpy(), 1, 32, 32).to(self.model_device)  # shape :(batchsize,1,32,32)
+        # latents = self.autoencoder_model.encode(x).latent_dist.sample()
+        # 使用 autoencoder 模型进行编码
+        reconstructed = self.autoencoder_model.decode(x).sample
 
-        x_pca_inverse_per = x_pca_inverse_per.unsqueeze(1)
-        x_pca_inverse_por = x_pca_inverse_por.unsqueeze(1)
+        reconstructed = reconstructed.unsqueeze(1)
 
-        x_autoencoder_per = self.autoencoder_per(x_pca_inverse_per)
-        x_autoencoder_por = self.autoencoder_por(x_pca_inverse_por)
-
-        x_combined = torch.cat((x_autoencoder_per, x_autoencoder_por), dim=2)
-
-        x_co2 = self.surrogate_model(x_combined)
+        # 使用 surrogate 模型进行预测
+        x_co2 = self.surrogate_model(reconstructed)
 
         return x_co2

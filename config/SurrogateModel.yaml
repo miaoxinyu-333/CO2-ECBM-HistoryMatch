@@ -1,0 +1,124 @@
+tasks:
+  task1:
+    task_params:
+      task_id: 1
+      task_name: "FourierUnet"
+      logger_path: "logs/tb_logs"
+      logger_name: "FourierUnet"
+      save_model_path: "logs/FourierUnet_PTH/best_model.pth"
+    model_params:
+      name: 'FourierUnet'
+      n_input_scalar_components: 2
+      n_input_vector_components: 0
+      n_output_scalar_components: 1
+      n_output_vector_components: 0
+      time_history: 1
+      time_future: 12
+      hidden_channels: 16
+      activation: 'gelu'
+      modes1: 16
+      modes2: 16
+      norm: True
+      ch_mults: [1, 2, 2, 2]
+      is_attn: [False, True, True, False]
+      mid_attn: True
+      n_blocks: 3
+      n_fourier_layers: 4
+      mode_scaling: True
+      use1x1: False
+    optimizer_params:
+      lr: 0.001
+      weight_decay: 0.00001
+    scheduler_params:
+      warmup_epochs: 0
+      max_epochs: 50
+      eta_min: 0.0000001
+    training_params:
+      batch_size: 32
+      max_epochs: 200
+    loss_function: "ScaledLpLoss"
+
+  task2:
+    task_params:
+      task_id: 2
+      task_name: "UnetBase"
+      logger_path: "logs/tb_logs"
+      logger_name: "UnetBase"
+      save_model_path: "logs/UnetBase_PTH/best_model.pth"
+    model_params:
+      name: 'Unetbase'
+      n_input_scalar_components: 2
+      n_input_vector_components: 0
+      n_output_scalar_components: 1
+      n_output_vector_components: 0
+      time_history: 1
+      time_future: 12
+      hidden_channels: 16
+      activation: 'relu'
+    optimizer_params:
+      lr: 0.001
+      weight_decay: 0.00001
+    scheduler_params:
+      warmup_epochs: 0
+      max_epochs: 50
+      eta_min: 0.0001
+    training_params:
+      batch_size: 32
+      max_epochs: 200
+    loss_function: "ScaledLpLoss"
+
+  task3:
+    task_params:
+      task_id: 3
+      task_name: "SimpleCNN"
+      logger_path: "logs/tb_logs"
+      logger_name: "SimpleCNN"
+      save_model_path: "logs/SimpleCNN_PTH/best_model.pth"
+    model_params:
+      name: 'SimpleCNN'
+      input_channels: 2
+      output_channels: 1
+      kernel_size: 3
+      time_steps: 12
+    optimizer_params:
+      lr: 0.001
+      weight_decay: 0.00001
+    scheduler_params:
+      warmup_epochs: 0
+      max_epochs: 50
+      eta_min: 0.0001
+    training_params:
+      batch_size: 16
+      max_epochs: 50
+    loss_function: "ScaledLpLoss"
+
+  task4:
+    task_params:
+      task_id: 4
+      task_name: "resnetModel"
+      logger_path: "logs/tb_logs"
+      logger_name: "resnetModel"
+      save_model_path: "logs/resnetModel/best_model.pth"
+    model_params:
+      name: 'ResNet'
+      n_input_scalar_components: 2
+      n_input_vector_components: 0
+      n_output_scalar_components: 1
+      n_output_vector_components: 0
+      time_history: 1
+      time_future: 12
+      hidden_channels: 16
+      activation: 'relu'
+      norm: true
+      num_blocks: [2, 2, 2, 2]
+    optimizer_params:
+      lr: 0.001
+      weight_decay: 0.0001
+    scheduler_params:
+      warmup_epochs: 0
+      max_epochs: 50
+      eta_min: 0.0001
+    training_params:
+      batch_size: 16
+      max_epochs: 50
+    loss_function: "ScaledLpLoss"

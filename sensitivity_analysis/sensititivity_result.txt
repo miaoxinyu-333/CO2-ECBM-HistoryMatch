@@ -1,0 +1,16 @@
+参数敏感性排序（基于范围归一化的 SSI，从高到低）:
+优先级 1: 参数 poro_pore_0, 平均 SSI: 3.516355201087446
+优先级 2: 参数 K0, 平均 SSI: 1.9487030214379484
+优先级 3: 参数 T_0, 平均 SSI: 1.235836100268345
+优先级 4: 参数 P1_0, 平均 SSI: 1.1327144935366902
+
+
+Models have been moved to device: cuda
+Forward model created successfully!
+C:\Users\miao\anaconda3\envs\pytorch\lib\site-packages\diffusers\models\attention_processor.py:2358: UserWarning: 1Torch was not compiled with flash attention. (Triggered internally at C:\cb\pytorch_1000000000000\work\aten\src\ATen\native\transformers\cuda\sdp_utils.cpp:455.)
+  hidden_states = F.scaled_dot_product_attention(
+Mean NRMSE over the test set: 0.0743
+Mean R² over the test set: 0.9996
+Mean SSIM over the test set: 0.9986
+Mean MSE over the test set: 50.8168
+

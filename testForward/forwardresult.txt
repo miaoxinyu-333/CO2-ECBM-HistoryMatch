@@ -1,0 +1,24 @@
+(pytorch) D:\torchWorkspace\CO2-ECBM-HistoryMatch>C:/Users/miao/anaconda3/envs/pytorch/python.exe d:/torchWorkspace/CO2-ECBM-HistoryMatch/scripts/testForwardPCA.py
+torch.Size([4983, 2, 64, 64])
+PCA model loaded from logs/PCA_PKL/pca_model.pkl
+Loaded model weights from logs/UnetBase_PTH/best_model.pth
+Surrogate model loaded from logs/UnetBase_PTH/best_model.pth
+Surrogate model has been moved to device: cuda
+Forward model created successfully!
+Mean NRMSE over the test set: 0.1249
+Mean R² over the test set: 0.9989
+Mean SSIM over the test set: 0.9970
+Mean MSE over the test set: 142.2828
+
+(pytorch) D:\torchWorkspace\CO2-ECBM-HistoryMatch>C:/Users/miao/anaconda3/envs/pytorch/python.exe d:/torchWorkspace/CO2-ECBM-HistoryMatch/scripts/testforward.py
+torch.Size([4983, 2, 64, 64])
+Loaded model weights from logs/AutoencoderKL_PTH/best_autoencoder_model.pth
+Loaded model weights from logs/FourierUnet_PTH/best_model.pth
+Models have been moved to device: cuda
+Forward model created successfully!
+C:\Users\miao\anaconda3\envs\pytorch\lib\site-packages\diffusers\models\attention_processor.py:2358: UserWarning: 1Torch was not compiled with flash attention. (Triggered internally at C:\cb\pytorch_1000000000000\work\aten\src\ATen\native\transformers\cuda\sdp_utils.cpp:455.)
+  hidden_states = F.scaled_dot_product_attention(
+Mean NRMSE over the test set: 0.0494
+Mean R² over the test set: 0.9998  
+Mean SSIM over the test set: 0.9989
+Mean MSE over the test set: 22.4099

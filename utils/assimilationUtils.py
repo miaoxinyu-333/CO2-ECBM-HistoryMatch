@@ -1,26 +1,57 @@
 import torch
 import numpy as np
 
-def initialize_parameters(eki, low=-0.05, high=5.0):
-    """Initialize parameter ensemble with random values."""
-    parameter_ensemble = (high - low) * torch.rand((eki.num_particles, *eki.parameter_dim), device=eki.device) + low
+def initialize_parameters(eki, mean=0.0, std=1.0, low=-10, high=10):
+    """
+    Initialize parameter ensemble with values sampled from a truncated normal distribution.
+    
+    Args:
+        eki: The ESMDA instance with configuration for ensemble size and parameter dimensions.
+        mean (float): Mean of the normal distribution.
+        std (float): Standard deviation of the normal distribution.
+        low (float): Lower bound of the truncated range.
+        high (float): Upper bound of the truncated range.
+        
+    Returns:
+        torch.Tensor: Initialized parameter ensemble.
+    """
+    # Generate a normal distribution
+    parameter_ensemble = torch.randn((eki.num_particles, *eki.parameter_dim), device=eki.device) * std + mean
+    
+    # Clamp values to the range [low, high]
+    parameter_ensemble = torch.clamp(parameter_ensemble, low, high)
+    
     return parameter_ensemble
 
 def compute_parameter_posterior(prior, c_up, c_pp, r, r_matrix, h):
     return prior + torch.matmul(c_up, torch.linalg.solve(c_pp + 1 / h * r_matrix, r))
 
 def perform_data_assimilation(eki, observation_operator, observations, parameter_ensemble):
-    """Run the Ensemble Kalman Inversion and track intermediate outputs, errors, and variance."""
+    """
+    Run the Ensemble Kalman Inversion and track intermediate outputs, errors, and variance.
+    """
     all_outputs = []
     mse_list = []
     mae_list = []
     
+    # Calculate initial parameter variance
     initial_parameter_variance = parameter_ensemble.var(dim=0).cpu().numpy()
     final_parameter_variance = None
 
-    for _ in range(eki.num_iterations):
+    first_obs_prior = None  # Store the first obs_prior
+    final_obs_prior = None  # Store the final obs_prior
+
+    for i in range(eki.num_iterations):
+        # Forward model computation
         output_prior = eki._compute_ensemble(parameter_ensemble)
-        obs_prior = torch.stack([observation_operator(output_prior[j].to(eki.device)) for j in range(eki.num_particles)]).to(eki.device)
+        obs_prior = torch.stack([
+            observation_operator(output_prior[j].to(eki.device))
+            for j in range(eki.num_particles)
+        ]).to(eki.device)
+
+        # Store the first obs_prior
+        if i == 0:
+            first_obs_prior = obs_prior.clone()
 
         # Store outputs and compute errors
         all_outputs.append(obs_prior.mean(dim=0).cpu().numpy())
@@ -29,12 +60,31 @@ def perform_data_assimilation(eki, observation_operator, observations, parameter
         mse_list.append(mse)
         mae_list.append(mae)
 
+        # Convergence check based on relative MAE change
+        if i > 0:  # Ensure there is a previous MAE to compare
+            relative_mae_change = abs(mae_list[-1] - mae_list[-2]) / mae_list[-2]
+            if relative_mae_change < 0.001:  # Change < 0.1%
+                print(f"Convergence achieved with relative MAE change < 0.1% after {i + 1} iterations.")
+                final_obs_prior = obs_prior.clone()
+                break
+
         # Update parameters with EKI
         parameter_ensemble = update_parameters(eki, parameter_ensemble, obs_prior, observations)
+        final_parameter_variance = parameter_ensemble.var(dim=0).cpu().numpy()
 
-    final_parameter_variance = parameter_ensemble.var(dim=0).cpu().numpy()
-    
-    return all_outputs, mse_list, mae_list, initial_parameter_variance, final_parameter_variance
+    # If the loop ends without convergence, set final_obs_prior to the last obs_prior
+    if final_obs_prior is None:
+        final_obs_prior = obs_prior.clone()
+
+    return (
+        all_outputs,
+        mse_list,
+        mae_list,
+        initial_parameter_variance,
+        final_parameter_variance,
+        first_obs_prior.cpu().numpy(),
+        final_obs_prior.cpu().numpy(),
+    )
 
 def generate_noise(observations, r_matrix, alpha_k, num_particles, device):
     """

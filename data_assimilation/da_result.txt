@@ -1,0 +1,13 @@
+(pytorch) D:\torchWorkspace\CO2-ECBM-HistoryMatch>C:/Users/miao/anaconda3/envs/pytorch/python.exe d:/torchWorkspace/CO2-ECBM-HistoryMatch/scripts/dataAssimilation.py
+Loaded model weights from logs/AutoencoderKL_PTH/best_autoencoder_model.pth
+Loaded model weights from logs/FourierUnet_PTH/best_model.pth
+Models have been moved to device: cuda
+C:\Users\miao\anaconda3\envs\pytorch\lib\site-packages\diffusers\models\attention_processor.py:2358: UserWarning: 1Torch was not compiled with flash attention. (Triggered internally at C:\cb\pytorch_1000000000000\work\aten\src\ATen\native\transformers\cuda\sdp_utils.cpp:455.)
+  hidden_states = F.scaled_dot_product_attention(
+C:\Users\miao\anaconda3\envs\pytorch\lib\site-packages\torch\nn\modules\conv.py:456: UserWarning: Plan failed with a cudnnException: CUDNN_BACKEND_EXECUTION_PLAN_DESCRIPTOR: cudnnFinalize Descriptor Failed cudnn_status: CUDNN_STATUS_NOT_SUPPORTED (Triggered internally at C:\cb\pytorch_1000000000000\work\aten\src\ATen\native\cudnn\Conv_v8.cpp:919.)     
+  return F.conv2d(input, weight, bias, self.stride,
+Convergence achieved with relative MAE change < 0.1% after 30 iterations.
+Average Initial Variance: 1.019302
+Average Final Variance: 0.857849
+Initial MSE: 4001.492188, Final MSE: 26.673025
+Initial MAE: 60.827869, Final MAE: 3.923676

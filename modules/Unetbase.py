@@ -27,74 +27,44 @@ SOFTWARE.
 
 import torch
 from torch import nn
-
 from .activations import ACTIVATION_REGISTRY
 
-
 class ConvBlock(nn.Module):
-    def __init__(self, in_channels, out_channels, num_groups=1, norm: bool = True, activation="gelu") -> None:
+    def __init__(self, in_channels, out_channels, activation="relu") -> None:
         super().__init__()
-        self.activation = ACTIVATION_REGISTRY.get(activation, None)
-        if self.activation is None:
-            raise NotImplementedError(f"Activation {activation} not implemented")
-
+        self.activation = getattr(nn, activation.capitalize(), nn.ReLU)()  # Default to ReLU
         self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1)
         self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1)
-        if norm:
-            # Original used BatchNorm2d
-            self.norm1 = nn.GroupNorm(num_groups, out_channels)
-            self.norm2 = nn.GroupNorm(num_groups, out_channels)
-        else:
-            self.norm1 = nn.Identity()
-            self.norm2 = nn.Identity()
 
     def forward(self, x: torch.Tensor):
-        h = self.activation(self.norm1(self.conv1(x)))
-        h = self.activation(self.norm2(self.conv2(h)))
+        h = self.activation(self.conv1(x))
+        h = self.activation(self.conv2(h))
         return h
 
 
 class Down(nn.Module):
-    def __init__(self, in_channels, out_channels, num_groups=1, norm: bool = True, activation="gelu") -> None:
+    def __init__(self, in_channels, out_channels, activation="relu") -> None:
         super().__init__()
-        self.conv = ConvBlock(in_channels, out_channels, num_groups, norm, activation)
+        self.conv = ConvBlock(in_channels, out_channels, activation)
         self.pool = nn.MaxPool2d(2)
 
     def forward(self, x: torch.Tensor):
-        h = self.pool(x)
-        h = self.conv(h)
-        return h
+        return self.conv(self.pool(x))
 
 
 class Up(nn.Module):
-    def __init__(self, in_channels, out_channels, num_groups=1, norm: bool = True, activation="gelu") -> None:
+    def __init__(self, in_channels, out_channels, activation="relu") -> None:
         super().__init__()
         self.up = nn.ConvTranspose2d(in_channels, in_channels // 2, kernel_size=2, stride=2)
-        self.conv = ConvBlock(in_channels, out_channels, num_groups, norm, activation)
+        self.conv = ConvBlock(in_channels, out_channels, activation)
 
     def forward(self, x1: torch.Tensor, x2: torch.Tensor):
-        h = self.up(x1)
-        h = torch.cat([x2, h], dim=1)
-        h = self.conv(h)
-        return h
+        x1 = self.up(x1)
+        x = torch.cat([x2, x1], dim=1)
+        return self.conv(x)
 
 
 class Unetbase(nn.Module):
-    """Our interpretation of the original U-Net architecture.
-
-    Uses [torch.nn.GroupNorm][] instead of [torch.nn.BatchNorm2d][]. Also there is no `BottleNeck` block.
-
-    Args:
-        n_input_scalar_components (int): Number of scalar components in the model
-        n_input_vector_components (int): Number of vector components in the model
-        n_output_scalar_components (int): Number of output scalar components in the model
-        n_output_vector_components (int): Number of output vector components in the model
-        time_history (int): Number of time steps in the input.
-        time_future (int): Number of time steps in the output.
-        hidden_channels (int): Number of channels in the hidden layers.
-        activation (str): Activation function to use. One of ["gelu", "relu", "silu"].
-    """
-
     def __init__(
         self,
         n_input_scalar_components: int,
@@ -104,7 +74,7 @@ class Unetbase(nn.Module):
         time_history: int,
         time_future: int,
         hidden_channels: int,
-        activation="gelu",
+        activation="relu",
     ) -> None:
         super().__init__()
         self.n_input_scalar_components = n_input_scalar_components
@@ -117,47 +87,47 @@ class Unetbase(nn.Module):
         self.activation = ACTIVATION_REGISTRY.get(activation, None)
         if self.activation is None:
             raise NotImplementedError(f"Activation {activation} not implemented")
+        insize = time_history * (n_input_scalar_components + n_input_vector_components * 2)
+        outsize = time_future * (n_output_scalar_components + n_output_vector_components * 2)
 
-        insize = time_history * (self.n_input_scalar_components + self.n_input_vector_components * 2)
-        n_channels = hidden_channels
-        self.image_proj = ConvBlock(insize, n_channels, activation=activation)
+        # Input projection
+        self.image_proj = ConvBlock(insize, hidden_channels, activation)
 
-        self.down = nn.ModuleList(
-            [
-                Down(n_channels, n_channels * 2, activation=activation),
-                Down(n_channels * 2, n_channels * 4, activation=activation),
-                Down(n_channels * 4, n_channels * 8, activation=activation),
-                Down(n_channels * 8, n_channels * 16, activation=activation),
-            ]
-        )
-        self.up = nn.ModuleList(
-            [
-                Up(n_channels * 16, n_channels * 8, activation=activation),
-                Up(n_channels * 8, n_channels * 4, activation=activation),
-                Up(n_channels * 4, n_channels * 2, activation=activation),
-                Up(n_channels * 2, n_channels, activation=activation),
-            ]
-        )
-        out_channels = time_future * (self.n_output_scalar_components + self.n_output_vector_components * 2)
-        # should there be a final norm too? but we aren't doing "prenorm" in the original
-        self.final = nn.Conv2d(n_channels, out_channels, kernel_size=(3, 3), padding=(1, 1))
+        # Down-sampling layers (4 levels)
+        self.down1 = Down(hidden_channels, hidden_channels * 2, activation)
+        self.down2 = Down(hidden_channels * 2, hidden_channels * 4, activation)
+        self.down3 = Down(hidden_channels * 4, hidden_channels * 8, activation)
+        self.down4 = Down(hidden_channels * 8, hidden_channels * 16, activation)
+
+        # Up-sampling layers (4 levels)
+        self.up1 = Up(hidden_channels * 16, hidden_channels * 8, activation)
+        self.up2 = Up(hidden_channels * 8, hidden_channels * 4, activation)
+        self.up3 = Up(hidden_channels * 4, hidden_channels * 2, activation)
+        self.up4 = Up(hidden_channels * 2, hidden_channels, activation)
+
+        # Final output projection
+        self.final = nn.Conv2d(hidden_channels, outsize, kernel_size=3, padding=1)
 
     def forward(self, x):
-        assert x.dim() == 5
+        assert x.dim() == 5  # Expecting [batch, time, channels, height, width]
         orig_shape = x.shape
-        x = x.reshape(x.size(0), -1, *x.shape[3:])
-        h = self.image_proj(x)
+        x = x.view(x.size(0), -1, *x.shape[3:])  # Flatten time and channels into one dimension
 
-        x1 = self.down[0](h)
-        x2 = self.down[1](x1)
-        x3 = self.down[2](x2)
-        x4 = self.down[3](x3)
-        x = self.up[0](x4, x3)
-        x = self.up[1](x, x2)
-        x = self.up[2](x, x1)
-        x = self.up[3](x, h)
+        # Down-sampling
+        h1 = self.image_proj(x)
+        h2 = self.down1(h1)
+        h3 = self.down2(h2)
+        h4 = self.down3(h3)
+        h5 = self.down4(h4)
 
-        x = self.final(x)
-        return x.reshape(
+        # Up-sampling
+        h = self.up1(h5, h4)
+        h = self.up2(h, h3)
+        h = self.up3(h, h2)
+        h = self.up4(h, h1)
+
+        # Final output
+        x = self.final(h)
+        return x.view(
             orig_shape[0], -1, (self.n_output_scalar_components + self.n_output_vector_components * 2), *orig_shape[3:]
         )

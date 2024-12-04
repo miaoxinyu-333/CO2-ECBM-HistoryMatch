@@ -11,7 +11,7 @@ class ESMDA:
         forward_model: nn.Module,
         num_particles: int = 100,
         num_iterations: int = 100,
-        parameter_dim: tuple = (2, 300),  # Updated to match new input shape
+        parameter_dim: tuple = (4,8,8),  # Updated to match new input shape
         device: str = 'cuda'
     ) -> None:
         self.device = device
@@ -20,14 +20,13 @@ class ESMDA:
         self.num_iterations = num_iterations
         self.h = 1 / self.num_iterations
         self.parameter_dim = parameter_dim
-        self.num_parameter_dofs = parameter_dim[0] * parameter_dim[1]  # 2 * 300 = 600
+        self.num_parameter_dofs = parameter_dim[0] * parameter_dim[1] *parameter_dim[2]
         self.batch_size = 25  # Adjust batch size as needed
-        self.output_dim = (self.num_particles, 12, 1, 32, 32)  # Maintain the output shape
+        self.output_dim = (self.num_particles, 12, 1, 64, 64)  # Maintain the output shape
 
     def _compute_ensemble(self, parameters: torch.Tensor) -> torch.Tensor:
         parameters = parameters.reshape((self.num_particles, *self.parameter_dim)).to(self.device)
-        output_shape = (self.num_particles, 12, 1, 32, 32)
-        model_output = torch.zeros(output_shape, device=self.device)
+        model_output = torch.zeros(self.output_dim, device=self.device)
 
         with torch.no_grad():
             for i in range(0, self.num_particles, self.batch_size):
@@ -38,6 +37,7 @@ class ESMDA:
 
         return model_output
 
+    """
     def solve(self, observation_operator: callable, observations: torch.Tensor, noise_std: float = 0.1):
         self.forward_model.eval()
         observations = observations.to(self.device)
@@ -75,3 +75,4 @@ class ESMDA:
 
         output_posterior = self._compute_ensemble(parameter_ensemble)
         return parameter_ensemble.cpu(), output_posterior.cpu()
+    """
