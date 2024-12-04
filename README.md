@@ -1,94 +1,165 @@
 # CO2-ECBM-HistoryMatch
 
-**CO2-ECBM-HistoryMatch** is a project focused on history matching and simulation in the fields of CO2 and Enhanced Coal Bed Methane (ECBM) recovery. This project employs deep learning and data assimilation techniques, using the Ensemble Smoother with Multiple Data Assimilation (ESMDA) algorithm. It trains a three-stage forward model, which includes a feature refinement model, a feature reconstruction model (Inverse-PCA), and a surrogate model, to efficiently fit historical data and make predictions.
+**CO2-ECBM-HistoryMatch** is a project focused on history matching and simulation in the fields of CO2 and Enhanced Coal Bed Methane (ECBM) recovery. This project employs deep learning and data assimilation techniques, using the Ensemble Smoother with Multiple Data Assimilation (ESMDA) algorithm. It trains a forward model, which includes a Autoencdoerkl model and a Fourier-UNet model, to efficiently fit historical data and make predictions.
 
 ## Project Structure
 
 ```
 CO2-ECBM-HistoryMatch
-├── config                    # Configuration files and related Python modules
-│   ├── FourierModelConfig.py # Python config file for Fourier model
-│   ├── FourierUNet.yaml      # YAML config file for Fourier UNet model
-│   ├── pca.yaml              # YAML config file for PCA model
-│   ├── PCAModelConfig.py     # Python config file for PCA model
-│   ├── __init__.py           # Initialization file for the config module
-├── data/                     # Data module for handling data loading and preprocessing
-│   ├── AHMDataModule.py      # History matching data module, defines the data handling process
-│   ├── geo_model.py          # Gaussian distribution of permeability and porosity
-│   ├── geo_pycomsol.py       # mph library for comsol 
-│   └── __init__.py           # Initialization file for the data module
-├── dataSet                   # Directory for raw and reconstructed data
-│   ├── processed             # Processed datasets
-│   ├── raw                   # Raw datasets (HDF5 format)
-├── evaluation                # Evaluation module
-│   ├── eval_metric.py        # Code defining model evaluation metrics
-│   ├── __init__.py           # Initialization file for the evaluation module
-├── logs                      # Stores training logs, model checkpoints, and generated images
-│   ├── images                # Stores generated image files
-│   ├── pcaModel              # Stores results for the PCA model
-│   ├── recModel              # Stores results for the reconstruction model
-│   ├── surrogateModel        # Stores results for the surrogate model
-│   ├── tb_logs               # TensorBoard log files
-├── models                    # Model definition module
-│   ├── SurrogateModel.py           # History matching model definition
-│   ├── ForwardModel.py       # Forward model definition
-│   ├── PCAModel.py           # PCA model definition
-│   ├── __init__.py           # Initialization file for the models module
-├── modules                   # Modules defining neural network structures, loss functions, etc.
-│   ├── ESMDA.py              # Data assimilation algorithm module
-│   ├── FourierUnet.py        # Fourier UNet model definition
-│   ├── Unet.py               # UNet model definition
-│   ├── Resnet.py             # ResNet model definition
-│   ├── __init__.py           # Initialization file for the modules
-├── scripts                   # Script files for running various training and assimilation tasks
-│   ├── dataAssimilation.py   # Data assimilation script
-│   ├── run_all.py            # Script to run all tasks at once
-│   ├── __init__.py           # Initialization file for scripts
-├── training                  # Directory for training scripts
-│   ├── train_autoencoder_per.py  # Permeability autoencoder training script
-│   ├── train_autoencoder_por.py  # Porosity autoencoder training script
-│   ├── train_PCA.py              # PCA model training script
-│   ├── train_surrogateModel.py   # Surrogate model training script
-│   ├── __init__.py               # Initialization file for training module
-├── utils                     # Utility module containing tools for data handling, evaluation, visualization, etc.
-│   ├── dataUtils.py          # Data handling utilities
-│   ├── plotUtils.py          # Visualization utilities
-│   ├── metricsUtils.py       # Evaluation metrics utilities
-│   ├── assimilationUtils.py  # Data assimilation utilities
-│   ├── __init__.py           # Initialization file for utils
-├── environment.yml           # Conda environment configuration file
-├── LICENSE                   # Project license file
-├── README.md                 # Project documentation file
-├── requirements.txt          # Python dependencies file
+├── checkModel
+│   ├── checkAutoencoder.py
+│   ├── checkFourierUNet.py
+│   ├── checkUNet.py
+│   └── timeFourierUNet.py
+├── config
+│   ├── SurrogateModel.yaml
+│   └── __init__.py
+├── data
+│   ├── AHMDataModule.py
+│   └── __init__.py
+├── data_assimilation
+│   ├── dataAssimilation.py
+│   └── da_result.txt
+├── environment.yml
+├── evaluation
+│   ├── eval_metric.py
+│   └── __init__.py
+├── geomodel
+│   ├── checkh5.py
+│   ├── execute.py
+│   ├── mph_execute.py
+│   ├── surrogate_dataset_create.py
+│   └── utils.py
+├── LICENSE
+├── models
+│   ├── AutoencoderKLWrapper.py
+│   ├── ForwardModel.py
+│   ├── ForwardModelCreator.py
+│   ├── ForwardModelCreatorPCA.py
+│   ├── ForwardModelPCA.py
+│   ├── LossFactory.py
+│   ├── lr_scheduler.py
+│   ├── ModelFactory.py
+│   ├── PCAModel.py
+│   ├── SurrogateModel.py
+│   └── __init__.py
+├── modules
+│   ├── activations.py
+│   ├── blocks.py
+│   ├── ConvLSTM.py
+│   ├── ESMDA.py
+│   ├── fourier.py
+│   ├── FourierUnet.py
+│   ├── loss.py
+│   ├── SimpleCNN.py
+│   ├── Unetbase.py
+│   └── __init__.py
+├── README.md
+├── requirements.txt
+├── scripts
+│   ├── latents_static.py
+│   └── __init__.py
+├── sensitivity_analysis
+│   ├── parameter_sensitivity.py
+│   ├── parameter_sensitivity_analysis.py
+│   └── sensititivity_result.txt
+├── testForward
+│   ├── forwardresult.txt
+│   ├── testforward.py
+│   └── testForwardPCA.py
+├── training
+│   ├── train_GeoParameterization_autoencoderkl.py
+│   ├── train_GeoParameterization_PCAbase.py
+│   ├── train_surrogateModel_cnn.py
+│   ├── train_surrogateModel_FourierUNet.py
+│   ├── train_surrogateModel_nuetbase.py
+│   ├── train_surrogateModel_resnet.py
+│   └── __init__.py
+├── uncertainty_analysis
+│   ├── parameter_uncertainy.py
+│   ├── uncertaintyresult.txt
+│   └── uncertainty_analysis_results
+└── utils
+    ├── assimilationUtils.py
+    ├── dataUtils.py
+    ├── fileUtils.py
+    ├── metricsUtils.py
+    ├── plotUtils.py
+    └── __init__.py
 ```
 
 ## Project Modules
 
 The project is divided into the following main modules:
 
-1. **Configuration Module (`config`)**:
-    - Stores all configuration files for the models and algorithms, including both YAML config files and Python classes.
+### 1. Configuration Module (`config`)
+- Stores configuration files for the surrogate models and algorithms, including YAML config files like `SurrogateModel.yaml` and an initialization file for easier access.
 
-2. **Data Module (`data`)**:
-    - Responsible for loading and preprocessing datasets, handling various data formats and files used in the history matching process.
+### 2. Data Module (`data`)
+- Responsible for loading and preprocessing datasets, as defined in `AHMDataModule.py`. This module is crucial for preparing data for assimilation and model training.
 
-3. **Dataset Directory (`dataSet`)**:
-    - Stores raw and processed datasets, including permeability, porosity, and other data in HDF5 format.
+### 3. Data Assimilation Module (`data_assimilation`)
+- Contains scripts for performing data assimilation tasks, including `dataAssimilation.py`.
+- Results from assimilation tasks are logged in `da_result.txt`.
 
-4. **Evaluation Module (`evaluation`)**:
-    - Defines and calculates evaluation metrics for model performance, such as Mean Squared Error (MSE) and Mean Absolute Error (MAE).
+### 4. Evaluation Module (`evaluation`)
+- Defines evaluation metrics for assessing model performance, with functionality implemented in `eval_metric.py`.
+- Common metrics like Mean Squared Error (MSE) and other custom metrics are handled here.
 
-5. **Model Module (`models`)**:
-    - Contains all model architectures, including autoencoders, UNet, ResNet, and PCA models.
+### 5. Geological Model Module (`geomodel`)
+- Contains scripts for generating and manipulating geological models:
+  - `execute.py` for running simulations.
+  - `surrogate_dataset_create.py` for dataset preparation.
+- Utilities for handling HDF5 files are included.
 
-6. **Scripts Module (`scripts`)**:
-    - Scripts for running data assimilation, model training, and other tasks. A script is also provided to run all tasks at once.
+### 6. Model Module (`models`)
+- Contains implementations of various model architectures:
+  - Autoencoders
+  - UNet
+  - PCA-based models
+- Includes factory classes (`ModelFactory.py`) for streamlined model creation and custom loss functions.
 
-7. **Training Module (`training`)**:
-    - Contains scripts for training models such as permeability and porosity autoencoders, PCA, and surrogate models.
+### 7. Modules Directory (`modules`)
+- Contains core building blocks for model architectures, including:
+  - Activation functions
+  - Layers
+  - Advanced modules like Fourier transformations (`fourier.py`) and ConvLSTM (`ConvLSTM.py`).
 
-8. **Utilities Module (`utils`)**:
-    - Contains utility functions for data handling, visualization, evaluation, and data assimilation.
+### 8. Scripts Module (`scripts`)
+- Provides scripts for specific tasks such as generating latent variable visualizations with `latents_static.py`.
+
+### 9. Training Module (`training`)
+- Includes scripts for training different models:
+  - Autoencoders
+  - PCA-based models
+  - Surrogate models like Fourier UNet (`train_surrogateModel_FourierUNet.py`).
+
+### 10. Sensitivity Analysis Module (`sensitivity_analysis`)
+- Contains scripts for sensitivity analysis, such as `parameter_sensitivity.py`.
+- Logs results in `sensititivity_result.txt`.
+
+### 11. Uncertainty Analysis Module (`uncertainty_analysis`)
+- Handles uncertainty analysis.
+- Results are stored in `uncertaintyresult.txt` and detailed logs in the `uncertainty_analysis_results` directory.
+
+### 12. Test Forward Module (`testForward`)
+- Provides testing scripts for forward modeling approaches:
+  - `testforward.py` for standard forward models.
+  - `testForwardPCA.py` for PCA-based forward models.
+- Results are logged in `forwardresult.txt`.
+
+### 13. Utilities Module (`utils`)
+- Provides utility functions for:
+  - File handling
+  - Plotting
+  - Data assimilation
+  - Metrics computation
+- Key utilities include `plotUtils.py` for visualization and `dataUtils.py` for data processing.
+
+### 14. Environment and Dependencies
+- The `environment.yml` and `requirements.txt` files define the required dependencies and environments for the project.
+
+---
 
 ## Installation
 
@@ -115,13 +186,7 @@ The project is divided into the following main modules:
 
 ## Configuration Files
 
-The project uses YAML configuration files to store training parameters, dataset paths, logging paths, etc. Each task has its own config file located in the `config/` directory, such as `FourierUNet.yaml` and `pca.yaml`.
-
-In each training script, the path to the configuration file is specified like this:
-
-```python
-config_path = os.path.join("config", "FourierUNet.yaml")
-```
+The project uses YAML configuration files to store training parameters, dataset paths, logging paths, etc. Each task has its own config file located in the `config/` directory, such as `SurrogateModel.yaml`.
 
 ## DataSet and Logs
 
@@ -139,22 +204,14 @@ This will ensure that all files are properly located when running the project.
 
 ### 1. Train Autoencoder Models
 
-The project includes two autoencoder training scripts, one for the permeability channel and one for the porosity channel.
+The project includes an autoencoder training script that uses KL Divergence regularization for permeability and porosity tensors.
 
-#### Train the Permeability Autoencoder
-
-Run the following command to start training:
-
-```bash
-python training/train_autoencoder_per.py
-```
-
-#### Train the Porosity Autoencoder
+#### Train the GeoParameterization AutoencoderKL
 
 Run the following command to start training:
 
 ```bash
-python training/train_autoencoder_por.py
+python training/train_GeoParameterization_autoencoderkl.py
 ```
 
 ### 2. Train PCA Model
@@ -162,15 +219,21 @@ python training/train_autoencoder_por.py
 Run the following command to train the PCA model:
 
 ```bash
-python training/train_PCA.py
+python training/train_GeoParameterization_PCAbase.py
 ```
+
 
 ### 3. Train Surrogate Model
 
-Run the following command to train the surrogate model:
+Run the following command to train the Surrogate model:
 
 ```bash
-python training/train_surrogateModel.py
+python training/train_surrogateModel_FourierUNet.py
+```
+
+
+```bash
+python training/train_surrogateModel_nuetbase.py
 ```
 
 ### 4. Data Assimilation
@@ -182,46 +245,25 @@ The project supports data assimilation using the Ensemble Smoother with Multiple
 Use the following command to run the data assimilation script:
 
 ```bash
-python scripts/dataAssimilation.py
+python data_assimilation/dataAssimilation.py
 ```
 
 The script will:
 - Initialize the ESMDA model
 - Load observation data
 - Run the data assimilation process
-- Generate error plots and parameter assimilation results, saved in the `logs/images/assimilation` directory
 
-The output includes the final Mean Squared Error (MSE) and Mean Absolute Error (MAE).
-
-### 5. Run All Tasks
-
-If you want to run all training and data assimilation tasks at once, you can use the `scripts/run_all.py` script.
-
-Run the following command:
+### 5. Sensitivity Analysis
 
 ```bash
-python scripts/run_all.py
+python sensitivity_analysis/parameter_sensitivity.py
 ```
 
-This script will sequentially run:
-- `train_PCA.py`
-- `train_autoencoder_per.py`
-- `train_autoencoder_por.py`
-- `train_surrogateModel.py`
-- `dataAssimilation.py`
+### 6. Uncertainty Analysis
 
-Results will be logged, and any errors will stop the process.
-
-## Documentation
-
-The documentation for this project is already pre-built and can be viewed easily.
-
-### Viewing Documentation Locally
-
-To view the documentation locally, simply run the following command from the project root directory:
 
 ```bash
-start build/html/index.html
+python uncertainty_analysis/parameter_uncertainy.py
 ```
 
 ## Logs and Checkpoints
