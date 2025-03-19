@@ -1,6 +1,8 @@
-# CO2-ECBM-HistoryMatch
+# Automated History Matching for CO2-ECBM Reservoirs Using Fourier-UNet Surrogate Models and Ensemble Smoother with Multiple Data Assimilation
+DOI:https://doi.org/10.1016/j.jgsce.2025.205539
 
 **CO2-ECBM-HistoryMatch** is a project focused on history matching and simulation in the fields of CO2 and Enhanced Coal Bed Methane (ECBM) recovery. This project employs deep learning and data assimilation techniques, using the Ensemble Smoother with Multiple Data Assimilation (ESMDA) algorithm. It trains a forward model, which includes a Autoencdoerkl model and a Fourier-UNet model, to efficiently fit historical data and make predictions.
+
 
 ## Project Structure
 
